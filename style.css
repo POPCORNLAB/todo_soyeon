@@ -1,0 +1,110 @@
+:root {
+  --paper: #f3ecdd;
+  --ink: #26221d;
+  --ink-soft: #7a7064;
+  --line: #cfc4ae;
+  --seal: #a8322a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 32px 16px 48px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Noto Serif KR", "Nanum Myeongjo", "Apple SD Gothic Neo", "Malgun Gothic", serif;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+h1 {
+  margin: 0 0 24px;
+  padding-bottom: 12px;
+  border-bottom: 3px double var(--ink);
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+input[type="text"] {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+}
+
+input[type="text"]::placeholder {
+  color: var(--ink-soft);
+}
+
+button {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+form button {
+  border: 1px solid var(--seal);
+  background: var(--seal);
+  color: var(--paper);
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+li input[type="checkbox"] {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  accent-color: var(--seal);
+}
+
+li span {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+li button {
+  flex: none;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+#empty-message {
+  padding: 24px 0;
+  color: var(--ink-soft);
+  text-align: center;
+}
