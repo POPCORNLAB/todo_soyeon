@@ -1,6 +1,7 @@
 const form = document.querySelector('form');
 const input = document.getElementById('todo-input');
 const addButton = form.querySelector('button');
+const timeInput = document.getElementById('todo-time');
 const list = document.getElementById('todo-list');
 const remainingCount = document.getElementById('remaining-count');
 const totalCount = document.getElementById('total-count');
@@ -43,8 +44,20 @@ function addTodo() {
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
 
-  const text = document.createElement('span');
-  text.textContent = title;
+  const text = document.createElement('div');
+  text.className = 'text';
+
+  const titleSpan = document.createElement('span');
+  titleSpan.className = 'title';
+  titleSpan.textContent = title;
+  text.append(titleSpan);
+
+  if (timeInput.value !== '') {
+    const meta = document.createElement('span');
+    meta.className = 'meta';
+    meta.textContent = '⏰ ' + timeInput.value;
+    text.append(meta);
+  }
 
   const deleteButton = document.createElement('button');
   deleteButton.type = 'button';
@@ -55,6 +68,7 @@ function addTodo() {
   updateSummary();
 
   input.value = '';
+  timeInput.value = '';
   input.focus();
 }
 

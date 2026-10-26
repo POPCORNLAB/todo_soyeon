@@ -37,11 +37,14 @@ h1 {
 
 form {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 24px;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="time"],
+input[type="number"] {
   flex: 1;
   min-width: 0;
   min-height: 44px;
@@ -51,6 +54,10 @@ input[type="text"] {
   background: var(--card);
   color: var(--ink);
   font: inherit;
+}
+
+#todo-input {
+  flex-basis: 100%;
 }
 
 input[type="text"]::placeholder {
@@ -109,8 +116,14 @@ li input[type="checkbox"]:focus-visible {
   outline-offset: 2px;
 }
 
-li span {
+li .text {
+  display: flex;
   flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+li .title {
   min-width: 0;
   overflow-wrap: anywhere;
   font-family: var(--myeongjo);
@@ -118,9 +131,15 @@ li span {
   font-weight: 400;
 }
 
-li:has(input:checked) span {
+li:has(input:checked) .title {
   color: #d3ccbc;
   text-decoration: line-through;
+}
+
+.meta {
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: 16px;
 }
 
 li button {
