@@ -1,9 +1,9 @@
 :root {
-  --paper: #f3ecdd;
-  --ink: #26221d;
-  --ink-soft: #7a7064;
-  --line: #cfc4ae;
-  --seal: #a8322a;
+  --paper: #fdf8e8;
+  --ink: #35322c;
+  --ink-soft: #7a705c;
+  --line: #e3d7b2;
+  --seal: #4a6a88;
 }
 
 * {
