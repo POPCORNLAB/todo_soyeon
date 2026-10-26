@@ -108,3 +108,17 @@ li button {
   color: var(--ink-soft);
   text-align: center;
 }
+
+@media (max-width: 600px) {
+  form button {
+    border-color: #5c3a21;
+    border-radius: 999px;
+    background: #5c3a21;
+  }
+
+  li button {
+    border-color: #5c3a21;
+    border-radius: 999px;
+    color: #5c3a21;
+  }
+}
