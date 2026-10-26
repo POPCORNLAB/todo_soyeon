@@ -192,6 +192,32 @@ li button {
   font-weight: 400;
 }
 
+#praise {
+  width: min(320px, calc(100% - 32px));
+  padding: 24px 16px;
+  border: 1px solid var(--brown);
+  background: var(--card);
+  color: var(--ink);
+  text-align: center;
+}
+
+#praise::backdrop {
+  background: rgba(59, 42, 30, 0.4);
+}
+
+#praise p {
+  margin: 0 0 16px;
+  font-family: var(--myeongjo);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+#praise button {
+  border: 1px solid var(--brown);
+  background: var(--brown);
+  color: var(--paper);
+}
+
 #empty-message {
   padding: 24px 0;
   color: var(--ink-soft);

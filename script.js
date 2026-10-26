@@ -3,6 +3,13 @@ const input = document.getElementById('todo-input');
 const addButton = form.querySelector('button');
 const timeInput = document.getElementById('todo-time');
 const minutesInput = document.getElementById('todo-minutes');
+const praise = document.getElementById('praise');
+const praiseMessage = document.getElementById('praise-message');
+const praiseMessages = [
+  '오늘 할 일을 모두 해냈어요! 정말 잘했어요 🎉',
+  '완벽해요! 오늘도 해냈네요 👏',
+  '수고했어요, 소연! 오늘은 푹 쉬어도 좋아요 🌿',
+];
 const list = document.getElementById('todo-list');
 const remainingCount = document.getElementById('remaining-count');
 const totalCount = document.getElementById('total-count');
@@ -154,6 +161,13 @@ list.addEventListener('change', (event) => {
   }
   moveItem(event.target.closest('li'));
   updateSummary();
+  if (event.target.checked && remainingCount.textContent === '0') {
+    const pick = Math.floor(Math.random() * praiseMessages.length);
+    praiseMessage.textContent = praiseMessages[pick];
+    praise.showModal();
+  }
 });
 
 updateSummary();
+
+document.getElementById('praise-close').addEventListener('click', () => praise.close());
