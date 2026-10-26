@@ -14,6 +14,30 @@ const list = document.getElementById('todo-list');
 const remainingCount = document.getElementById('remaining-count');
 const totalCount = document.getElementById('total-count');
 const doneCount = document.getElementById('done-count');
+const emptyMessage = document.getElementById('empty-message');
+
+const SUPABASE_URL = 'https://hogtgdcykgikinjsoxft.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_mQ4agq7ibtrUGiP8HiXarA_gO_VBRzW';
+
+async function api(query, options = {}) {
+  const response = await fetch(SUPABASE_URL + '/rest/v1/todos' + query, {
+    ...options,
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Supabase ' + response.status);
+  }
+  return response.status === 204 ? null : response.json();
+}
+
+function rowQuery(item) {
+  return '?id=eq.' + encodeURIComponent(item.dataset.id);
+}
 
 const timers = new Map();
 
@@ -83,35 +107,32 @@ function updateSummary() {
   totalCount.textContent = items.length;
   doneCount.textContent = done;
   remainingCount.textContent = items.length - done;
+  emptyMessage.hidden = items.length > 0;
 }
 
-function addTodo() {
-  const title = input.value.trim();
-  if (title === '') {
-    return;
-  }
-
+function buildItem(todo, time, minutes) {
   const item = document.createElement('li');
+  item.dataset.id = todo.id;
 
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
+  checkbox.checked = Boolean(todo.done);
 
   const text = document.createElement('div');
   text.className = 'text';
 
   const titleSpan = document.createElement('span');
   titleSpan.className = 'title';
-  titleSpan.textContent = title;
+  titleSpan.textContent = todo.text;
   text.append(titleSpan);
 
-  if (timeInput.value !== '') {
+  if (time) {
     const meta = document.createElement('span');
     meta.className = 'meta';
-    meta.textContent = '⏰ ' + timeInput.value;
+    meta.textContent = '⏰ ' + time;
     text.append(meta);
   }
 
-  const minutes = Number(minutesInput.value);
   if (minutes >= 1) {
     const timerButton = document.createElement('button');
     timerButton.type = 'button';
@@ -123,6 +144,7 @@ function addTodo() {
 
   const deleteButton = document.createElement('button');
   deleteButton.type = 'button';
+  deleteButton.className = 'delete-button';
   deleteButton.textContent = '삭제';
 
   item.append(checkbox, text);
@@ -130,8 +152,30 @@ function addTodo() {
     item.append(item.timerButton);
   }
   item.append(deleteButton);
-  list.insertBefore(item, firstDoneItem() || null);
-  updateSummary();
+  return item;
+}
+
+async function addTodo() {
+  const title = input.value.trim();
+  if (title === '') {
+    return;
+  }
+
+  const time = timeInput.value;
+  const minutes = Number(minutesInput.value);
+
+  try {
+    const [todo] = await api('', {
+      method: 'POST',
+      headers: { Prefer: 'return=representation' },
+      body: JSON.stringify({ text: title, done: false }),
+    });
+    list.insertBefore(buildItem(todo, time, minutes), firstDoneItem() || null);
+    updateSummary();
+  } catch (error) {
+    alert('할 일을 저장하지 못했어요. 잠시 뒤에 다시 해 주세요.');
+    return;
+  }
 
   input.value = '';
   timeInput.value = '';
@@ -146,28 +190,71 @@ form.addEventListener('submit', (event) => {
   addTodo();
 });
 
+async function deleteTodo(item) {
+  try {
+    await api(rowQuery(item), { method: 'DELETE' });
+  } catch (error) {
+    alert('할 일을 지우지 못했어요. 잠시 뒤에 다시 해 주세요.');
+    return;
+  }
+  if (item.timerButton) {
+    stopTimer(item.timerButton);
+  }
+  item.remove();
+  updateSummary();
+}
+
 list.addEventListener('click', (event) => {
   const button = event.target.closest('.timer-button');
   if (button) {
     toggleTimer(button);
+    return;
+  }
+
+  const deleteButton = event.target.closest('.delete-button');
+  if (deleteButton) {
+    deleteTodo(deleteButton.closest('li'));
   }
 });
 
-list.addEventListener('change', (event) => {
-  const timerButton = event.target.closest('li').timerButton;
-  if (timerButton && event.target.checked && timers.get(timerButton).running) {
+list.addEventListener('change', async (event) => {
+  const item = event.target.closest('li');
+  const checked = event.target.checked;
+
+  try {
+    await api(rowQuery(item), { method: 'PATCH', body: JSON.stringify({ done: checked }) });
+  } catch (error) {
+    event.target.checked = !checked;
+    alert('체크를 저장하지 못했어요. 잠시 뒤에 다시 해 주세요.');
+    return;
+  }
+
+  const timerButton = item.timerButton;
+  if (timerButton && checked && timers.get(timerButton).running) {
     stopTimer(timerButton);
     showTimer(timerButton);
   }
-  moveItem(event.target.closest('li'));
+  moveItem(item);
   updateSummary();
-  if (event.target.checked && remainingCount.textContent === '0') {
+  if (checked && remainingCount.textContent === '0') {
     const pick = Math.floor(Math.random() * praiseMessages.length);
     praiseMessage.textContent = praiseMessages[pick];
     praise.showModal();
   }
 });
 
-updateSummary();
+async function loadTodos() {
+  list.replaceChildren();
+  try {
+    const todos = await api('?select=id,text,done,created_at&order=created_at.asc');
+    todos.filter((todo) => !todo.done).forEach((todo) => list.append(buildItem(todo)));
+    todos.filter((todo) => todo.done).forEach((todo) => list.append(buildItem(todo)));
+  } catch (error) {
+    alert('할 일 목록을 불러오지 못했어요. 새로고침해 주세요.');
+  }
+  updateSummary();
+}
+
+loadTodos();
 
 document.getElementById('praise-close').addEventListener('click', () => praise.close());
