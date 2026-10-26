@@ -119,7 +119,8 @@ li span {
 }
 
 li:has(input:checked) span {
-  color: #aaa293;
+  color: #d3ccbc;
+  text-decoration: line-through;
 }
 
 li button {

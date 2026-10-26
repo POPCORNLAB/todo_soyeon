@@ -6,6 +6,24 @@ const remainingCount = document.getElementById('remaining-count');
 const totalCount = document.getElementById('total-count');
 const doneCount = document.getElementById('done-count');
 
+function firstDoneItem() {
+  return [...list.querySelectorAll('li')].find(
+    (item) => item.querySelector('input[type="checkbox"]').checked
+  );
+}
+
+function moveItem(item) {
+  const checked = item.querySelector('input[type="checkbox"]').checked;
+  if (checked) {
+    list.append(item);
+    return;
+  }
+  const firstDone = firstDoneItem();
+  if (firstDone && firstDone !== item) {
+    list.insertBefore(item, firstDone);
+  }
+}
+
 function updateSummary() {
   const items = list.querySelectorAll('li');
   const done = list.querySelectorAll('input[type="checkbox"]:checked').length;
@@ -33,7 +51,7 @@ function addTodo() {
   deleteButton.textContent = '삭제';
 
   item.append(checkbox, text, deleteButton);
-  list.append(item);
+  list.insertBefore(item, firstDoneItem() || null);
   updateSummary();
 
   input.value = '';
@@ -47,6 +65,9 @@ form.addEventListener('submit', (event) => {
   addTodo();
 });
 
-list.addEventListener('change', updateSummary);
+list.addEventListener('change', (event) => {
+  moveItem(event.target.closest('li'));
+  updateSummary();
+});
 
 updateSummary();
