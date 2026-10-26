@@ -1,10 +1,10 @@
 :root {
-  --paper: #f6eee0;
-  --card: #fbf6ec;
-  --ink: #3b2a1e;
-  --ink-soft: #7d6650;
-  --line: #e9dec9;
-  --brown: #5c3a21;
+  --paper: #f1e2c8;
+  --card: #faf1df;
+  --ink: #46361f;
+  --ink-soft: #86714f;
+  --line: #ddc9a3;
+  --brown: #98692f;
   --myeongjo: "Nanum Myeongjo", "Noto Serif KR", "AppleMyungjo", "Batang", "Source Han Serif K", serif;
   --hand: "Nanum Pen Script", "Gaegu", "Segoe Print", "Bradley Hand", cursive;
   --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "D2Coding", monospace;
@@ -137,7 +137,7 @@ li .title {
 }
 
 li:has(input:checked) .title {
-  color: #d3ccbc;
+  color: #d4c3a0;
   text-decoration: line-through;
 }
 
@@ -202,7 +202,7 @@ li button {
 }
 
 #praise::backdrop {
-  background: rgba(59, 42, 30, 0.4);
+  background: rgba(70, 54, 31, 0.4);
 }
 
 #praise p {
