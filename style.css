@@ -136,33 +136,6 @@ li button {
   font-family: var(--mono);
 }
 
-#remaining {
-  margin-bottom: 24px;
-}
-
-#remaining h2 {
-  margin: 0 0 8px;
-  font-family: var(--myeongjo);
-  font-size: 20px;
-  font-weight: 700;
-}
-
-#remaining-list li {
-  display: list-item;
-  margin: 0 0 0 20px;
-  padding: 2px 0;
-  border: 0;
-  background: transparent;
-  list-style: disc;
-  font-family: var(--myeongjo);
-  font-size: 18px;
-}
-
-#remaining-empty {
-  margin: 0;
-  color: var(--ink-soft);
-}
-
 #empty-message {
   padding: 24px 0;
   color: var(--ink-soft);
