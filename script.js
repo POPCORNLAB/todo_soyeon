@@ -247,10 +247,25 @@ list.addEventListener('change', async (event) => {
   }
 });
 
+function todayStart() {
+  const start = new Date();
+  start.setHours(0, 0, 0, 0);
+  return encodeURIComponent(start.toISOString());
+}
+
 async function loadTodos() {
   list.replaceChildren();
   try {
-    const todos = await api('?select=id,text,done,created_at,due_time,timer_minutes&order=created_at.asc');
+    await api('?created_at=lt.' + todayStart(), { method: 'DELETE' });
+  } catch (error) {
+    // 지난 할 일을 못 지워도 오늘 것만 골라서 보여 준다
+  }
+  try {
+    const todos = await api(
+      '?select=id,text,done,created_at,due_time,timer_minutes&created_at=gte.' +
+        todayStart() +
+        '&order=created_at.asc'
+    );
     todos.filter((todo) => !todo.done).forEach((todo) => list.append(buildItem(todo)));
     todos.filter((todo) => todo.done).forEach((todo) => list.append(buildItem(todo)));
   } catch (error) {
