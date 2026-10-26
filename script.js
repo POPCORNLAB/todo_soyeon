@@ -2,6 +2,17 @@ const form = document.querySelector('form');
 const input = document.getElementById('todo-input');
 const addButton = form.querySelector('button');
 const list = document.getElementById('todo-list');
+const remainingCount = document.getElementById('remaining-count');
+const totalCount = document.getElementById('total-count');
+const doneCount = document.getElementById('done-count');
+
+function updateSummary() {
+  const items = list.querySelectorAll('li');
+  const done = list.querySelectorAll('input[type="checkbox"]:checked').length;
+  totalCount.textContent = items.length;
+  doneCount.textContent = done;
+  remainingCount.textContent = items.length - done;
+}
 
 function addTodo() {
   const title = input.value.trim();
@@ -23,6 +34,7 @@ function addTodo() {
 
   item.append(checkbox, text, deleteButton);
   list.append(item);
+  updateSummary();
 
   input.value = '';
   input.focus();
@@ -34,3 +46,7 @@ form.addEventListener('submit', (event) => {
   event.preventDefault();
   addTodo();
 });
+
+list.addEventListener('change', updateSummary);
+
+updateSummary();
