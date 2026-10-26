@@ -29,16 +29,16 @@ body {
 }
 
 h1 {
-  margin: 0 0 24px;
-  font-family: var(--round);
-  font-size: 38px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  margin: 0 0 16px;
+  overflow: hidden;
 }
 
-h1::after {
-  content: " ✿";
-  color: var(--violet);
+h1 img {
+  display: block;
+  width: 130%;
+  max-width: none;
+  margin: -9% -15%;
+  mix-blend-mode: multiply;
 }
 
 form {
