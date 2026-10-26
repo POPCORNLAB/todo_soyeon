@@ -1,9 +1,12 @@
 :root {
-  --paper: #fdf8e8;
-  --ink: #35322c;
-  --ink-soft: #7a705c;
-  --line: #e3d7b2;
-  --seal: #4a6a88;
+  --paper: #f6eee0;
+  --card: #fbf6ec;
+  --ink: #3b2a1e;
+  --ink-soft: #7d6650;
+  --line: #e9dec9;
+  --brown: #5c3a21;
+  --hand: "Nanum Pen Script", "Gaegu", "Segoe Print", "Bradley Hand", cursive;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "D2Coding", monospace;
 }
 
 * {
@@ -24,7 +27,7 @@ body {
 h1 {
   margin: 0 0 24px;
   padding-bottom: 12px;
-  border-bottom: 3px double var(--ink);
+  border-bottom: 1px solid var(--ink);
   font-size: 38px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -41,9 +44,9 @@ input[type="text"] {
   min-width: 0;
   min-height: 44px;
   padding: 0 12px;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--line);
   border-radius: 0;
-  background: transparent;
+  background: var(--card);
   color: var(--ink);
   font: inherit;
 }
@@ -61,8 +64,8 @@ button {
 }
 
 form button {
-  border: 1px solid var(--seal);
-  background: var(--seal);
+  border: 1px solid var(--brown);
+  background: var(--brown);
   color: var(--paper);
 }
 
@@ -76,21 +79,29 @@ li {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--line);
+  margin-bottom: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  background: var(--card);
 }
 
 li input[type="checkbox"] {
   flex: none;
   width: 24px;
   height: 24px;
-  accent-color: var(--seal);
+  accent-color: #000;
 }
 
 li span {
   flex: 1;
   min-width: 0;
   overflow-wrap: anywhere;
+}
+
+li:has(input:checked) span {
+  color: #000;
+  font-family: var(--hand);
+  font-size: 22px;
 }
 
 li button {
@@ -103,6 +114,10 @@ li button {
   font-size: 15px;
 }
 
+.num {
+  font-family: var(--mono);
+}
+
 #empty-message {
   padding: 24px 0;
   color: var(--ink-soft);
@@ -111,14 +126,12 @@ li button {
 
 @media (max-width: 600px) {
   form button {
-    border-color: #5c3a21;
     border-radius: 999px;
-    background: #5c3a21;
   }
 
   li button {
-    border-color: #5c3a21;
+    border-color: var(--brown);
     border-radius: 999px;
-    color: #5c3a21;
+    color: var(--brown);
   }
 }
