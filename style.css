@@ -28,6 +28,7 @@ h1 {
   margin: 0 0 24px;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--ink);
+  font-family: "Nanum Myeongjo", "Noto Serif KR", "AppleMyungjo", "Batang", "Source Han Serif K", serif;
   font-size: 38px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -87,21 +88,36 @@ li {
 
 li input[type="checkbox"] {
   flex: none;
-  width: 24px;
-  height: 24px;
-  accent-color: #000;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  margin: 0;
+  border: 2px solid var(--ink-soft);
+  border-radius: 5px 7px 6px 8px;
+  background: transparent no-repeat center / 100%;
+  cursor: pointer;
+}
+
+li input[type="checkbox"]:checked {
+  border-color: #000;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 13.5c1.8.9 3.6 3 5 5.5 3.2-6.4 6.8-11.4 11-15.5'/%3E%3C/svg%3E");
+}
+
+li input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--brown);
+  outline-offset: 2px;
 }
 
 li span {
   flex: 1;
   min-width: 0;
   overflow-wrap: anywhere;
+  font-family: var(--hand);
+  font-size: 22px;
 }
 
 li:has(input:checked) span {
   color: #000;
-  font-family: var(--hand);
-  font-size: 22px;
 }
 
 li button {
