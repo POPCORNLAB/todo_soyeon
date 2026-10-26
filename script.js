@@ -110,7 +110,7 @@ function updateSummary() {
   emptyMessage.hidden = items.length > 0;
 }
 
-function buildItem(todo, time, minutes) {
+function buildItem(todo) {
   const item = document.createElement('li');
   item.dataset.id = todo.id;
 
@@ -126,18 +126,18 @@ function buildItem(todo, time, minutes) {
   titleSpan.textContent = todo.text;
   text.append(titleSpan);
 
-  if (time) {
+  if (todo.due_time) {
     const meta = document.createElement('span');
     meta.className = 'meta';
-    meta.textContent = '⏰ ' + time;
+    meta.textContent = '⏰ ' + todo.due_time.slice(0, 5);
     text.append(meta);
   }
 
-  if (minutes >= 1) {
+  if (todo.timer_minutes >= 1) {
     const timerButton = document.createElement('button');
     timerButton.type = 'button';
     timerButton.className = 'timer-button';
-    timers.set(timerButton, { remaining: Math.floor(minutes) * 60, running: false, id: null });
+    timers.set(timerButton, { remaining: todo.timer_minutes * 60, running: false, id: null });
     showTimer(timerButton);
     item.timerButton = timerButton;
   }
@@ -161,16 +161,20 @@ async function addTodo() {
     return;
   }
 
-  const time = timeInput.value;
-  const minutes = Number(minutesInput.value);
+  const minutes = Math.floor(Number(minutesInput.value));
 
   try {
     const [todo] = await api('', {
       method: 'POST',
       headers: { Prefer: 'return=representation' },
-      body: JSON.stringify({ text: title, done: false }),
+      body: JSON.stringify({
+        text: title,
+        done: false,
+        due_time: timeInput.value || null,
+        timer_minutes: minutes >= 1 ? minutes : null,
+      }),
     });
-    list.insertBefore(buildItem(todo, time, minutes), firstDoneItem() || null);
+    list.insertBefore(buildItem(todo), firstDoneItem() || null);
     updateSummary();
   } catch (error) {
     alert('할 일을 저장하지 못했어요. 잠시 뒤에 다시 해 주세요.');
@@ -246,7 +250,7 @@ list.addEventListener('change', async (event) => {
 async function loadTodos() {
   list.replaceChildren();
   try {
-    const todos = await api('?select=id,text,done,created_at&order=created_at.asc');
+    const todos = await api('?select=id,text,done,created_at,due_time,timer_minutes&order=created_at.asc');
     todos.filter((todo) => !todo.done).forEach((todo) => list.append(buildItem(todo)));
     todos.filter((todo) => todo.done).forEach((todo) => list.append(buildItem(todo)));
   } catch (error) {
