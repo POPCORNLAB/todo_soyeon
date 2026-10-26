@@ -5,6 +5,7 @@
   --ink-soft: #7d6650;
   --line: #e9dec9;
   --brown: #5c3a21;
+  --myeongjo: "Nanum Myeongjo", "Noto Serif KR", "AppleMyungjo", "Batang", "Source Han Serif K", serif;
   --hand: "Nanum Pen Script", "Gaegu", "Segoe Print", "Bradley Hand", cursive;
   --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "D2Coding", monospace;
 }
@@ -28,7 +29,7 @@ h1 {
   margin: 0 0 24px;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--ink);
-  font-family: "Nanum Myeongjo", "Noto Serif KR", "AppleMyungjo", "Batang", "Source Han Serif K", serif;
+  font-family: var(--myeongjo);
   font-size: 38px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -112,12 +113,13 @@ li span {
   flex: 1;
   min-width: 0;
   overflow-wrap: anywhere;
-  font-family: var(--hand);
-  font-size: 22px;
+  font-family: var(--myeongjo);
+  font-size: 18px;
+  font-weight: 400;
 }
 
 li:has(input:checked) span {
-  color: #000;
+  color: #aaa293;
 }
 
 li button {
