@@ -228,10 +228,6 @@ li button {
   justify-content: center;
   gap: 12px;
   margin-top: 40px;
-  color: var(--ink-soft);
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
 }
 
 #author img {
@@ -240,6 +236,23 @@ li button {
   border: 2px solid var(--ink);
   border-radius: 50%;
   object-fit: cover;
+}
+
+#author .name {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+#author .by {
+  color: var(--ink-soft);
+  font-size: 16px;
+}
+
+#author strong {
+  color: var(--ink);
+  font-size: 22px;
+  letter-spacing: 0.02em;
 }
 
 #praise {
