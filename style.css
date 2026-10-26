@@ -136,10 +136,6 @@ li button {
   font-family: var(--mono);
 }
 
-.num {
-  font-family: var(--mono);
-}
-
 #summary {
   margin-bottom: 24px;
   padding: 12px 16px;
