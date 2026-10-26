@@ -222,6 +222,26 @@ li button {
   font-weight: 400;
 }
 
+#author {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 40px;
+  color: var(--ink-soft);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+#author img {
+  width: 56px;
+  height: 56px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 #praise {
   width: min(320px, calc(100% - 32px));
   padding: 24px 16px;
