@@ -83,22 +83,28 @@ function toggleTimer(button) {
   showTimer(button);
 }
 
-function firstDoneItem() {
-  return [...list.querySelectorAll('li')].find(
-    (item) => item.querySelector('input[type="checkbox"]').checked
-  );
-}
-
-function moveItem(item) {
-  const checked = item.querySelector('input[type="checkbox"]').checked;
-  if (checked) {
-    list.append(item);
-    return;
-  }
-  const firstDone = firstDoneItem();
-  if (firstDone && firstDone !== item) {
-    list.insertBefore(item, firstDone);
-  }
+function sortList() {
+  const items = [...list.querySelectorAll('li')];
+  const key = (item) => [
+    item.querySelector('input[type="checkbox"]').checked ? 1 : 0,
+    item.dataset.time ? 0 : 1,
+    item.dataset.time || '',
+    item.dataset.created || '',
+  ];
+  items.sort((x, y) => {
+    const kx = key(x);
+    const ky = key(y);
+    for (let i = 0; i < kx.length; i += 1) {
+      if (kx[i] < ky[i]) {
+        return -1;
+      }
+      if (kx[i] > ky[i]) {
+        return 1;
+      }
+    }
+    return 0;
+  });
+  list.append(...items);
 }
 
 function updateSummary() {
@@ -113,6 +119,8 @@ function updateSummary() {
 function buildItem(todo) {
   const item = document.createElement('li');
   item.dataset.id = todo.id;
+  item.dataset.time = todo.due_time ? todo.due_time.slice(0, 5) : '';
+  item.dataset.created = todo.created_at;
 
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
@@ -174,7 +182,8 @@ async function addTodo() {
         timer_minutes: minutes >= 1 ? minutes : null,
       }),
     });
-    list.insertBefore(buildItem(todo), firstDoneItem() || null);
+    list.append(buildItem(todo));
+    sortList();
     updateSummary();
   } catch (error) {
     alert('할 일을 저장하지 못했어요. 잠시 뒤에 다시 해 주세요.');
@@ -238,7 +247,7 @@ list.addEventListener('change', async (event) => {
     stopTimer(timerButton);
     showTimer(timerButton);
   }
-  moveItem(item);
+  sortList();
   updateSummary();
   if (checked && remainingCount.textContent === '0') {
     const pick = Math.floor(Math.random() * praiseMessages.length);
@@ -266,8 +275,8 @@ async function loadTodos() {
         todayStart() +
         '&order=created_at.asc'
     );
-    todos.filter((todo) => !todo.done).forEach((todo) => list.append(buildItem(todo)));
-    todos.filter((todo) => todo.done).forEach((todo) => list.append(buildItem(todo)));
+    todos.forEach((todo) => list.append(buildItem(todo)));
+    sortList();
   } catch (error) {
     alert('할 일 목록을 불러오지 못했어요. 새로고침해 주세요.');
   }
